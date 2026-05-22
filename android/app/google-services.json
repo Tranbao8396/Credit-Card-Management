@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "480378877957",
+    "project_id": "credit-management-297ab",
+    "storage_bucket": "credit-management-297ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480378877957:android:ec9931974ca3a769a9c46c",
+        "android_client_info": {
+          "package_name": "com.example.credit_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkqP1AxtQDe5st4AhChhCDXEMaGKE6_po"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
