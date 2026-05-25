@@ -20,24 +20,24 @@ class AccountPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CardButton(
-                text: 'Đồng bộ ngân hàng',
-                onPressed: () async {
-                  final res = await DataMigrationService().migrationRun();
-                  if (res != null && res == true) {
-                    if (!context.mounted) return;
-                    NotifyDialogWidget.show(
-                      context,
-                      'Thành công',
-                      'Đã đồng bộ thành công. yêu cầu khởi động lại app',
-                    );
-                  }
-                },
-                buttonColor: Colors.amber,
-                fontSize: 16,
-                textColor: Colors.black,
-              ),
-              SizedBox(height: 10),
+              // CardButton(
+              //   text: 'Đồng bộ ngân hàng',
+              //   onPressed: () async {
+              //     final res = await DataMigrationService().migrationRun();
+              //     if (res != null && res == true) {
+              //       if (!context.mounted) return;
+              //       NotifyDialogWidget.show(
+              //         context,
+              //         'Thành công',
+              //         'Đã đồng bộ thành công. yêu cầu khởi động lại app',
+              //       );
+              //     }
+              //   },
+              //   buttonColor: Colors.amber,
+              //   fontSize: 16,
+              //   textColor: Colors.black,
+              // ),
+              // SizedBox(height: 10),
               InfoCard(
                 userInfo: authInstance.userInfo,
                 cardColor: const Color.fromARGB(255, 54, 255, 87),
