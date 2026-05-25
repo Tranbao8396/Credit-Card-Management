@@ -3,7 +3,6 @@ import 'package:credit_management/subpages/card_detail/card_detail_logic.dart';
 import 'package:credit_management/subpages/card_detail/widgets/transaction_dialog.dart';
 import 'package:credit_management/widgets/card_button.dart';
 import 'package:credit_management/widgets/lined_title.dart';
-import 'package:credit_management/widgets/month_picker.dart';
 import 'package:credit_management/widgets/name_card.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -63,21 +62,111 @@ class CardDetailPage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: MonthPicker(
-                          labelText: 'Tháng bắt đầu',
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
+                        flex: 4,
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: TextEditingController(
+                            text: state.startDate != null
+                                ? DateFormat.yMd().format(state.startDate!)
+                                : '',
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Ngày bắt đầu",
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            prefixIcon: IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.calendar_month),
+                            ),
+                          ),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(1950),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (pickedDate != null) {
+                              logic.setStartDate(pickedDate);
+                            }
+                          },
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
-                        child: Text('tới', style: TextStyle(fontSize: 16)),
-                      ),
+                      SizedBox(width: 2,),
                       Expanded(
-                        child: MonthPicker(
-                          labelText: 'Tháng kết thúc',
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2100),
+                        flex: 4,
+                        child: TextFormField(
+                          readOnly: true,
+                          controller: TextEditingController(
+                            text: state.endDate != null
+                                ? DateFormat.yMd().format(state.endDate!)
+                                : '',
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Ngày kết thúc",
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            prefixIcon: IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.calendar_month),
+                            ),
+                          ),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(1950),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (pickedDate != null) {
+                              logic.setEndDate(pickedDate);
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 2,),
+                      Expanded(
+                        flex: 2,
+                        child: CardButton(
+                          text: 'Lọc',
+                          onPressed: () async {
+                            await logic.getTransactionsList();
+                          },
+                          buttonColor: const Color.fromARGB(255, 80, 108, 131),
                         ),
                       ),
                     ],

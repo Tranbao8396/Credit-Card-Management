@@ -107,6 +107,8 @@ class CardDetailLogic extends ChangeNotifier {
           .doc(userId)
           .collection('transactions')
           .where('card_id', isEqualTo: card.cardInfoId)
+          .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
+          .where('createdOn', isLessThanOrEqualTo: state.endDate)
           .get();
 
       state.transactions = query.docs.map<CardTransaction?>((e) {

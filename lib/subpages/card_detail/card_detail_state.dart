@@ -2,8 +2,8 @@ import 'package:credit_management/types/category.dart';
 import 'package:credit_management/types/card_transaction.dart';
 
 class CardDetailState {
-  DateTime? startDate;
-  DateTime? endDate;
+  DateTime? startDate = DateTime.now().subtract(const Duration(days: 30));
+  DateTime? endDate = DateTime.now();
   String? transactionName;
   double? price;
   Category? category;
