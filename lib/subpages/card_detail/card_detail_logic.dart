@@ -24,6 +24,8 @@ class CardDetailLogic extends ChangeNotifier {
   CardDetailLogic({required this.card}) {
     getCashBackList();
     getTransactionsList();
+    getTransactionCost();
+    getLimitSpending();
   }
 
   void setStartDate(DateTime startDate) {
@@ -53,6 +55,11 @@ class CardDetailLogic extends ChangeNotifier {
 
   void setTransactionDate(DateTime datetime) {
     state.transactionDate = datetime;
+    notifyListeners();
+  }
+
+  void setLimit(String limit) {
+    state.limitSpending = double.tryParse(limit);
     notifyListeners();
   }
 
@@ -114,7 +121,9 @@ class CardDetailLogic extends ChangeNotifier {
       state.transactions = query.docs.map<CardTransaction?>((e) {
         final data = e.data();
 
-        final cat = state.cashBackCat?.where((e) => e?.id == data['category_id']).firstOrNull;
+        final cat = state.cashBackCat
+            ?.where((e) => e?.id == data['category_id'])
+            .firstOrNull;
 
         return CardTransaction(
           transactionName: data['transaction_name'],
@@ -125,6 +134,71 @@ class CardDetailLogic extends ChangeNotifier {
         );
       }).toList();
       if (_isDisposed) return;
+      notifyListeners();
+    } catch (e) {
+      throw ("Error: $e");
+    }
+  }
+
+  Future<void> getTransactionCost() async {
+    try {
+      final currentDate = DateTime.now();
+      final startMonth = DateTime(currentDate.year, currentDate.month, 1);
+      final endMonth = DateTime(currentDate.year, currentDate.month + 1, 0);
+
+      final query = await _db
+          .collection('users')
+          .doc(userId)
+          .collection('transactions')
+          .where('card_id', isEqualTo: card.cardInfoId)
+          .where('createdOn', isGreaterThanOrEqualTo: startMonth)
+          .where('createdOn', isLessThanOrEqualTo: endMonth)
+          .get();
+
+      state.totalSpending = query.docs.fold(
+        0.0,
+        (cost, doc) => cost! + (doc.data()['price'] as num).toDouble(),
+      );
+      if (_isDisposed) return;
+      notifyListeners();
+    } catch (e) {
+      throw ("Error: $e");
+    }
+  }
+
+  Future<void> setLimitSpending(BuildContext context) async {
+    try {
+      if (state.limitSpending != null && state.limitSpending! > 0) {
+        await _db
+            .collection('users')
+            .doc(userId)
+            .collection('cards')
+            .doc(card.id)
+            .update({'limit_spending': state.limitSpending});
+      }
+      state.limitSpending = null;
+      notifyListeners();
+    } catch (e) {
+      throw ("Error: $e");
+    }
+    if (!context.mounted) return;
+    Navigator.of(context).pop(true);
+  }
+
+  Future<void> getLimitSpending() async {
+    try {
+      await _db
+          .collection('users')
+          .doc(userId)
+          .collection('cards')
+          .doc(card.id)
+          .get()
+          .then((doc) {
+            if (doc.exists) {
+              final data = doc.data();
+              state.limitVal = data?['limit_spending']?.toDouble() ?? 0.0;
+            }
+          });
       notifyListeners();
     } catch (e) {
       throw ("Error: $e");

@@ -6,6 +6,9 @@ class CardDetailState {
   DateTime? endDate = DateTime.now();
   String? transactionName;
   double? price;
+  double? totalSpending;
+  double? limitSpending;
+  double? limitVal;
   Category? category;
   List<Category?>? cashBackCat;
   DateTime? transactionDate;

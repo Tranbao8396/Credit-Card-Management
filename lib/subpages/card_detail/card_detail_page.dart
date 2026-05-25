@@ -1,5 +1,6 @@
 import 'package:credit_management/models/card_model.dart';
 import 'package:credit_management/subpages/card_detail/card_detail_logic.dart';
+import 'package:credit_management/subpages/card_detail/widgets/limit_dialog.dart';
 import 'package:credit_management/subpages/card_detail/widgets/transaction_dialog.dart';
 import 'package:credit_management/widgets/card_button.dart';
 import 'package:credit_management/widgets/lined_title.dart';
@@ -57,7 +58,47 @@ class CardDetailPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 5),
+                  LinedTitle(title: 'Mức chi tiêu'),
+                  NameCard(
+                    cardColor: const Color.fromARGB(255, 201, 148, 250),
+                    onSettingsPressed: () async {
+                      final res = await SetLimitWidget.show(context, card);
+                      if (res == true) {
+                        await logic.getLimitSpending();
+                      }
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text('Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}', style: TextStyle(
+                              fontSize: 16
+                            ),),
+                            Text(' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}', style: TextStyle(
+                              fontSize: 16
+                            ),),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text('${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ', style: TextStyle(
+                              fontSize: 16
+                            ),),
+                            Text(
+                              '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5),
                   LinedTitle(title: 'Dao dịch'),
                   Row(
                     children: [
@@ -109,7 +150,7 @@ class CardDetailPage extends StatelessWidget {
                           },
                         ),
                       ),
-                      SizedBox(width: 2,),
+                      SizedBox(width: 2),
                       Expanded(
                         flex: 4,
                         child: TextFormField(
@@ -158,7 +199,7 @@ class CardDetailPage extends StatelessWidget {
                           },
                         ),
                       ),
-                      SizedBox(width: 2,),
+                      SizedBox(width: 2),
                       Expanded(
                         flex: 2,
                         child: CardButton(
