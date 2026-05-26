@@ -80,7 +80,7 @@ class HomePageLogic extends ChangeNotifier {
           cardInfoId: data['card_info'],
           cardName: cardInfo?.bankCards?.first?.cardName??'',
           number: data['card_number'],
-          cardService: cardInfo?.bankCards?.first?.cardService??'',
+          cardService: data['card_type'],
           expiryDate: (data['card_expiry_date'] as Timestamp).toDate(),
         );
       }));
