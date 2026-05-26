@@ -109,7 +109,7 @@ class HomePageLogic extends ChangeNotifier {
         .collection('users')
         .doc(userId)
         .collection('cards')
-        .where('cardNumber', isEqualTo: state.cardNumber)
+        .where('card_number', isEqualTo: state.cardNumber)
         .get();
 
     if (existingCard.docs.isNotEmpty) {
@@ -124,8 +124,8 @@ class HomePageLogic extends ChangeNotifier {
     try {
       // Lưu thông tin thẻ vào Firestore
       await _db.collection('users').doc(userId).collection('cards').add({
-        'bank_info': state.cardBank!.id,
-        'card_info': state.cardInfo!.cardId,
+        'bank_info': state.cardBank?.id,
+        'card_info': state.cardInfo?.cardId,
         'card_number': state.cardNumber,
         'card_expiry_date': state.cardExpiryDate,
         'card_type': state.cardType,
@@ -179,7 +179,7 @@ class HomePageLogic extends ChangeNotifier {
     try {
       final res = await _db.collection('banks').doc(bankId).get();
       final data = res.data();
-      final cardList = data!['bank_cards'];
+      final cardList = data?['bank_cards'];
       state.bankCards = cardList.map<BankCard>((e) {
         return BankCard(
           cardId: e['card_id'],
@@ -199,14 +199,14 @@ class HomePageLogic extends ChangeNotifier {
     try {
       final res = await _db.collection('banks').doc(bankId).get();
       final data = res.data();
-      final cardsList = data!['bank_cards'];
+      final cardsList = data?['bank_cards'];
       final cardData = cardsList.where((bankCard) => bankCard['card_id'] == cardInfoId).single;
       final cardDataCon = BankCard(
         cardName: cardData['card_name'],
         cardService: cardData['card_service']
       );
       return Bank(
-        bankName: data['bank_name'],
+        bankName: data?['bank_name'],
         bankCards: <BankCard>[cardDataCon]
       );
     } catch (e) {
