@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SetLimitWidget {
-  static Future<bool?> show(BuildContext context, card) {
+  static Future<bool?> show(BuildContext context, card, limit) {
     return showDialog<bool?>(
       context: context,
-      builder: (context) => SetlimitDialog(card: card),
+      builder: (context) => SetlimitDialog(card: card, limit: limit),
     );
   }
 }
 
 class SetlimitDialog extends StatelessWidget {
   final CardModel card;
+  final double? limit;
 
-  const SetlimitDialog({super.key, required this.card});
+  const SetlimitDialog({super.key, required this.card, this.limit});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class SetlimitDialog extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextFormField(
-                        initialValue: state.limitVal != null ? state.limitVal!.toStringAsFixed(0) : '',
+                        initialValue: limit?.toStringAsFixed(0),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: "Hạn mức chi tiêu",

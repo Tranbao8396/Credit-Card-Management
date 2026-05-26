@@ -103,6 +103,7 @@ class CardDetailLogic extends ChangeNotifier {
       throw ('Error: $e');
     }
 
+    await getTransactionCost();
     if (!context.mounted) return;
     Navigator.of(context).pop(true);
   }

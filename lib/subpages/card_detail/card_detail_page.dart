@@ -63,7 +63,7 @@ class CardDetailPage extends StatelessWidget {
                   NameCard(
                     cardColor: const Color.fromARGB(255, 201, 148, 250),
                     onSettingsPressed: () async {
-                      final res = await SetLimitWidget.show(context, card);
+                      final res = await SetLimitWidget.show(context, card, state.limitVal);
                       if (res == true) {
                         await logic.getLimitSpending();
                       }
