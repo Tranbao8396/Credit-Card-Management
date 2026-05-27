@@ -1,9 +1,10 @@
-import 'package:credit_management/migrations/migration.dart';
+// import 'package:credit_management/migrations/migration.dart';
+import 'package:credit_management/pages/accountPage/widget/account_edit_dialog.dart';
 import 'package:credit_management/services/authentication_service.dart';
 import 'package:credit_management/widgets/card_button.dart';
 import 'package:credit_management/widgets/info_card.dart';
 import 'package:credit_management/widgets/lined_title.dart';
-import 'package:credit_management/widgets/notify_dialog.dart';
+// import 'package:credit_management/widgets/notify_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
@@ -41,7 +42,9 @@ class AccountPage extends StatelessWidget {
               InfoCard(
                 userInfo: authInstance.userInfo,
                 cardColor: const Color.fromARGB(255, 54, 255, 87),
-                onSettingsPressed: () {},
+                onSettingsPressed: () async {
+                  await AccountEditDialogWidget.show(context);
+                },
               ),
               SizedBox(height: 5),
               CardButton(
