@@ -76,7 +76,7 @@ class CardDetailLogic extends ChangeNotifier {
           .map<Category?>(
             (e) => Category(
               categoryName: e['category_name'],
-              cashBack: e['cash_back'],
+              cashBack: double.tryParse(e['cash_back']),
             ),
           )
           .toList();
