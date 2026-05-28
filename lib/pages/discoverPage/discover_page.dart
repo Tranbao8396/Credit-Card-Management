@@ -20,20 +20,19 @@ class DiscoverPage extends StatelessWidget {
             child: Column(
               children: [
                 LinedTitle(title: 'Ưu đãi từ thẻ'),
-                GridView.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+                ListView(
                   shrinkWrap: true,
-                  childAspectRatio: 2 / 1,
                   children: [
                     for (var bank in state.bankList ?? [])
-                      CardButton(
-                        text: "Ưu đãi từ ${bank.bankName}",
-                        buttonColor: Colors.blueGrey,
-                        onPressed: () {
-                          UrlService.openUrl(bank.bankUrl ?? '');
-                        },
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10.0),
+                        child: CardButton(
+                          text: "Ưu đãi từ ${bank.bankName}",
+                          buttonColor: Colors.blueGrey,
+                          onPressed: () {
+                            UrlService.openUrl(bank.bankUrl ?? '');
+                          },
+                        ),
                       ),
                   ],
                 ),

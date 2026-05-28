@@ -35,7 +35,7 @@ class CardDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LinedTitle(title: 'Danh muc được hoàn'),
+                  LinedTitle(title: 'Danh mục được hoàn'),
                   SizedBox(height: 5),
                   NameCard(
                     cardColor: const Color.fromARGB(255, 104, 203, 241),
@@ -58,7 +58,6 @@ class CardDetailPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 5),
                   LinedTitle(title: 'Mức chi tiêu'),
                   NameCard(
                     cardColor: const Color.fromARGB(255, 201, 148, 250),
@@ -74,10 +73,10 @@ class CardDetailPage extends StatelessWidget {
                         Row(
                           children: [
                             Text('Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}', style: TextStyle(
-                              fontSize: 16
+                              fontSize: 14
                             ),),
                             Text(' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}', style: TextStyle(
-                              fontSize: 16
+                              fontSize: 14
                             ),),
                           ],
                         ),
@@ -89,7 +88,7 @@ class CardDetailPage extends StatelessWidget {
                             Text(
                               '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -98,13 +97,13 @@ class CardDetailPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 5),
                   LinedTitle(title: 'Dao dịch'),
                   Row(
                     children: [
                       Expanded(
                         flex: 4,
                         child: TextFormField(
+                          style: TextStyle(fontSize: 14),
                           readOnly: true,
                           controller: TextEditingController(
                             text: state.startDate != null
@@ -154,6 +153,7 @@ class CardDetailPage extends StatelessWidget {
                       Expanded(
                         flex: 4,
                         child: TextFormField(
+                          style: TextStyle(fontSize: 14),
                           readOnly: true,
                           controller: TextEditingController(
                             text: state.endDate != null
@@ -203,7 +203,8 @@ class CardDetailPage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: CardButton(
-                          text: 'Lọc',
+                          fontSize: 18,
+                          text: '⌕',
                           onPressed: () async {
                             await logic.getTransactionsList();
                           },

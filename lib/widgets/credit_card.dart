@@ -54,7 +54,12 @@ class CreditCard extends StatelessWidget {
                   children: [
                     // Nội dung văn bản
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 10.0),
+                      padding: const EdgeInsets.fromLTRB(
+                        16.0,
+                        10.0,
+                        16.0,
+                        10.0,
+                      ),
                       child: Stack(
                         children: [
                           ConstrainedBox(
@@ -91,20 +96,24 @@ class CreditCard extends StatelessWidget {
                                       "Valid: $dateTimeString",
                                       style: TextStyle(color: Colors.grey[700]),
                                     ),
-                                    Text(
-                                      card.cardService??"Card",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                    if (card.cardService != null &&
+                                        card.cardService == 'Visa')
+                                      Image.asset(
+                                        'assets/icon/visa.png',
+                                        width: 50,
                                       ),
-                                    ),
+                                    if (card.cardService != null &&
+                                        card.cardService == 'Mastercard')
+                                      Image.asset(
+                                        'assets/icon/mastercard.png',
+                                        width: 50,
+                                      ),
                                   ],
                                 ),
                               ],
                             ),
                           ),
-                
+
                           Positioned(
                             bottom: 0,
                             right: -10,
@@ -113,11 +122,16 @@ class CreditCard extends StatelessWidget {
                                 ConfirmDialogWidget.show(
                                   context,
                                   title: 'Xác nhận xóa thẻ',
-                                  message: 'Bạn có chắc chắn muốn xóa thẻ này không?',
+                                  message:
+                                      'Bạn có chắc chắn muốn xóa thẻ này không?',
                                   onConfirm: onDelete,
                                 );
                               },
-                              icon: Icon(Icons.delete_outline_rounded, color: const Color.fromARGB(255, 133, 19, 19), size: 28),
+                              icon: Icon(
+                                Icons.delete_outline_rounded,
+                                color: const Color.fromARGB(255, 133, 19, 19),
+                                size: 28,
+                              ),
                             ),
                           ),
                         ],
