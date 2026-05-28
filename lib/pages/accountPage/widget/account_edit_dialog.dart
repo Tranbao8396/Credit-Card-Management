@@ -21,7 +21,6 @@ class AccountEditDialog extends StatelessWidget {
       create: (_) => AccountLogic(),
       child: Consumer<AccountLogic>(
         builder: (context, logic, child) {
-          final state = logic.state;
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
