@@ -1,5 +1,5 @@
 import 'package:credit_management/src/pages/cardPage/card_page_logic.dart';
-import 'package:credit_management/src/pages/cardPage/widgets/card_dialog.dart';
+import 'package:credit_management/src/widgets/card_dialog.dart';
 import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/widgets/credit_card.dart';
 import 'package:flutter/material.dart';

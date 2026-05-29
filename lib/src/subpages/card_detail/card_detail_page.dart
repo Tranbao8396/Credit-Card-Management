@@ -1,7 +1,7 @@
 import 'package:credit_management/src/models/card_model.dart';
 import 'package:credit_management/src/subpages/card_detail/card_detail_logic.dart';
-import 'package:credit_management/src/subpages/card_detail/widgets/limit_dialog.dart';
-import 'package:credit_management/src/subpages/card_detail/widgets/transaction_dialog.dart';
+import 'package:credit_management/src/widgets/limit_dialog.dart';
+import 'package:credit_management/src/widgets/transaction_dialog.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:credit_management/src/widgets/lined_title.dart';
 import 'package:credit_management/src/widgets/name_card.dart';
@@ -265,7 +265,7 @@ class CardDetailPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Text('${item.cashBackRatio.toString()}%'),
+                                    Text('${item?.cashBackRatio.toString()}%'),
                                   ],
                                 ),
                                 Row(
@@ -281,7 +281,7 @@ class CardDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${((item.cashBackRatio / 100) * item.price).toString()} vnd',
+                                      '${((item?.cashBackRatio / 100) * item?.price).toString()} vnd',
                                     ),
                                   ],
                                 ),
@@ -299,7 +299,7 @@ class CardDetailPage extends StatelessWidget {
                                     ),
                                     Text(
                                       (DateFormat.yMd().format(
-                                        item.createdOn,
+                                        item?.createdOn,
                                       )).toString(),
                                     ),
                                   ],

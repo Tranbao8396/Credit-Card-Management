@@ -1,5 +1,5 @@
 import 'package:credit_management/src/pages/searchPage/search_page_logic.dart';
-import 'package:credit_management/src/pages/searchPage/widgets/mcc_table.dart';
+import 'package:credit_management/src/widgets/mcc_table.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

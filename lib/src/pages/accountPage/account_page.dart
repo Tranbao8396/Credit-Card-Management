@@ -1,4 +1,4 @@
-import 'package:credit_management/src/pages/accountPage/widget/account_edit_dialog.dart';
+import 'package:credit_management/src/widgets/account_edit_dialog.dart';
 import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:credit_management/src/widgets/info_card.dart';

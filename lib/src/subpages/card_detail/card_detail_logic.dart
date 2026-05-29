@@ -90,13 +90,18 @@ class CardDetailLogic extends ChangeNotifier {
   Future<void> addTransaction(BuildContext context) async {
     if (state.isValid) return;
     try {
-      await _db.collection('users').doc(userId).collection('transactions').add({
-        'card_id': card.cardInfoId,
-        'transaction_name': state.transactionName,
-        'price': state.price,
-        'category_id': state.category!.id,
-        'createdOn': state.transactionDate ?? DateTime.now(),
-      });
+      await _db
+          .collection('users')
+          .doc(userId)
+          .collection('cards')
+          .doc(card.id)
+          .collection('transactions')
+          .add({
+            'transaction_name': state.transactionName,
+            'price': state.price,
+            'category_id': state.category!.id,
+            'createdOn': state.transactionDate ?? DateTime.now(),
+          });
       clear();
       notifyListeners();
     } catch (e) {
@@ -113,8 +118,9 @@ class CardDetailLogic extends ChangeNotifier {
       final query = await _db
           .collection('users')
           .doc(userId)
+          .collection('cards')
+          .doc(card.id)
           .collection('transactions')
-          .where('card_id', isEqualTo: card.cardInfoId)
           .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
           .where('createdOn', isLessThanOrEqualTo: state.endDate)
           .get();
@@ -150,8 +156,9 @@ class CardDetailLogic extends ChangeNotifier {
       final query = await _db
           .collection('users')
           .doc(userId)
+          .collection('cards')
+          .doc(card.id)
           .collection('transactions')
-          .where('card_id', isEqualTo: card.cardInfoId)
           .where('createdOn', isGreaterThanOrEqualTo: startMonth)
           .where('createdOn', isLessThanOrEqualTo: endMonth)
           .get();

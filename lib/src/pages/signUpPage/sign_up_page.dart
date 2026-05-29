@@ -1,4 +1,4 @@
-import 'package:credit_management/src/pages/signUpPage/widgets/sign_up_form.dart';
+import 'package:credit_management/src/widgets/sign_up_form.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatelessWidget {
