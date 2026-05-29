@@ -181,7 +181,7 @@ class TransactionDialog extends StatelessWidget {
                           : Text(''),
                       SizedBox(height: 10),
                       CardButton(
-                        text: 'Thêm danh mục',
+                        text: 'Thêm giao dịch',
                         onPressed: () async {
                           await logic.addTransaction(context);
                         },
