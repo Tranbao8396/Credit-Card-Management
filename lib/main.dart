@@ -1,6 +1,6 @@
 import 'package:credit_management/firebase_options.dart';
-import 'package:credit_management/routes/app_routes.dart';
-import 'package:credit_management/routes/user_routes.dart';
+import 'package:credit_management/src/routes/app_routes.dart';
+import 'package:credit_management/src/routes/user_routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
