@@ -38,6 +38,7 @@ class CardDetailPage extends StatelessWidget {
                   LinedTitle(title: 'Danh mục được hoàn'),
                   SizedBox(height: 5),
                   NameCard(
+                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
                     cardColor: const Color.fromARGB(255, 104, 203, 241),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,65 +56,72 @@ class CardDetailPage extends StatelessWidget {
                               Text('${item.cashBack.toString()}%'),
                             ],
                           ),
-                      ],
-                    ),
-                  ),
-                  LinedTitle(title: 'Mức chi tiêu'),
-                  NameCard(
-                    cardColor: const Color.fromARGB(255, 201, 148, 250),
-                    onSettingsPressed: () async {
-                      final res = await SetLimitWidget.show(
-                        context,
-                        card,
-                        state.limitVal,
-                      );
-                      if (res == true) {
-                        await logic.getLimitSpending();
-                      }
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                            Text(
-                              ' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}',
-                              style: TextStyle(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color:
-                                    state.limitVal != null &&
-                                        state.totalSpending != null &&
-                                        state.totalSpending! > state.limitVal!
-                                    ? const Color.fromARGB(255, 202, 43, 32)
-                                    : Colors.black,
-                                fontWeight:
-                                    state.limitVal != null &&
-                                        state.totalSpending != null &&
-                                        state.totalSpending! > state.limitVal!
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
+                        SizedBox(height: 10),
+                        NameCard(
+                          cardColor: const Color.fromARGB(255, 201, 148, 250),
+                          onSettingsPressed: () async {
+                            final res = await SetLimitWidget.show(
+                              context,
+                              card,
+                              state.limitVal,
+                            );
+                            if (res == true) {
+                              await logic.getLimitSpending();
+                            }
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    ' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Text(
-                              '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                              Row(
+                                children: [
+                                  Text(
+                                    '${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color:
+                                          state.limitVal != null &&
+                                              state.totalSpending != null &&
+                                              state.totalSpending! >
+                                                  state.limitVal!
+                                          ? const Color.fromARGB(
+                                              255,
+                                              202,
+                                              43,
+                                              32,
+                                            )
+                                          : Colors.black,
+                                      fontWeight:
+                                          state.limitVal != null &&
+                                              state.totalSpending != null &&
+                                              state.totalSpending! >
+                                                  state.limitVal!
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),

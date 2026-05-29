@@ -4,12 +4,14 @@ class NameCard extends StatelessWidget {
   final Widget? child;
   final Color? cardColor;
   final VoidCallback? onSettingsPressed;
+  final EdgeInsetsGeometry? padding;
 
   const NameCard({
     super.key,
     this.child,
     this.cardColor,
     this.onSettingsPressed,
+    this.padding,
   });
 
   @override
@@ -35,7 +37,7 @@ class NameCard extends StatelessWidget {
                 children: [
                   // Nội dung văn bản
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: padding ?? const EdgeInsets.all(16.0),
                     child: Stack(
                       children: [
                         ConstrainedBox(
