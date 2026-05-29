@@ -1,16 +1,13 @@
 import 'package:credit_management/src/pages/searchPage/search_page_logic.dart';
 import 'package:credit_management/src/pages/searchPage/search_state.dart';
+import 'package:credit_management/src/widgets/notify_dialog.dart';
 import 'package:flutter/material.dart';
 
 class MccTable extends StatelessWidget {
   final SearchState mccState;
   final SearchPageLogic mccLogic;
 
-  const MccTable({
-    super.key,
-    required this.mccState,
-    required this.mccLogic,
-  });
+  const MccTable({super.key, required this.mccState, required this.mccLogic});
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +27,7 @@ class MccTable extends StatelessWidget {
                 decoration: InputDecoration(
                   isDense: true,
                   contentPadding: EdgeInsets.symmetric(
-                    vertical:
-                        10.0,
+                    vertical: 10.0,
                     horizontal: 10.0,
                   ),
                   border: const OutlineInputBorder(
@@ -52,7 +48,8 @@ class MccTable extends StatelessWidget {
                     ),
                   ),
                 ),
-                onFieldSubmitted: (value) => mccLogic.paginate(context, int.tryParse(value) ?? 1),
+                onFieldSubmitted: (value) =>
+                    mccLogic.paginate(context, int.tryParse(value) ?? 1),
               ),
             ),
             SizedBox(width: 10),
@@ -119,7 +116,14 @@ class MccTable extends StatelessWidget {
                             (item) => DataRow(
                               cells: <DataCell>[
                                 DataCell(Text(item.code ?? '')),
-                                DataCell(Text(item.name ?? '')),
+                                DataCell(
+                                  TextButton(
+                                    child: Text(item.name ?? ''),
+                                    onPressed: () {
+                                      NotifyDialogWidget.show(context, 'Text', "Text");
+                                    },
+                                  ),
+                                ),
                                 DataCell(Text(item.cats?.join(', ') ?? '')),
                               ],
                             ),

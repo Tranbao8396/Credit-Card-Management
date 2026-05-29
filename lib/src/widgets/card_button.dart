@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CardButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? buttonColor;
   final Color? textColor;
   final double? fontSize;

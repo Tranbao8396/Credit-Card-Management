@@ -1,4 +1,5 @@
 import 'package:credit_management/src/pages/loginPage/login_page_logic.dart';
+import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,13 +21,30 @@ class LoginForm extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TextFormField(
-                    decoration:  InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      errorText: state.errorMessage
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.red, width: 4),
+                      ),
+                      errorText: state.errorMessage,
                     ),
                     onChanged: (value) => logic.setEmail(value),
                   ),
@@ -34,7 +52,23 @@ class LoginForm extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      border: const OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           state.isPasswordVisible
@@ -44,9 +78,10 @@ class LoginForm extends StatelessWidget {
                         onPressed: logic.togglePasswordVisibility,
                       ),
                       errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.red, width: 4),
                       ),
-                      errorText: state.errorMessage
+                      errorText: state.errorMessage,
                     ),
                     onChanged: (value) => logic.setPassword(value),
                     obscureText: !state.isPasswordVisible,
@@ -54,9 +89,10 @@ class LoginForm extends StatelessWidget {
                   const SizedBox(height: 20),
                   state.isLoading
                       ? const CircularProgressIndicator()
-                      : ElevatedButton(
+                      : CardButton(
                           onPressed: () => logic.login(context),
-                          child: const Text('Login'),
+                          buttonColor: const Color.fromARGB(255, 94, 99, 31),
+                          text: 'Login',
                         ),
                 ],
               ),

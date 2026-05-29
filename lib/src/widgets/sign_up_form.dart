@@ -1,4 +1,5 @@
 import 'package:credit_management/src/pages/signUpPage/sign_up_logic.dart';
+import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,11 +24,28 @@ class SignUpForm extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Full Name',
-                      border: OutlineInputBorder(),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      errorText: state.errorMessage
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.red, width: 4),
+                      ),
+                      errorText: state.errorMessage,
                     ),
                     onChanged: (value) => logic.setFullname(value),
                   ),
@@ -37,11 +55,28 @@ class SignUpForm extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      errorText: state.errorMessage
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.red, width: 4),
+                      ),
+                      errorText: state.errorMessage,
                     ),
                     onChanged: (value) => logic.setEmail(value),
                   ),
@@ -51,7 +86,27 @@ class SignUpForm extends StatelessWidget {
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Password',
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          width: 4,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.red, width: 4),
+                      ),
                       suffixIcon: IconButton(
                         icon: Icon(
                           state.isPasswordVisible
@@ -60,10 +115,7 @@ class SignUpForm extends StatelessWidget {
                         ),
                         onPressed: logic.togglePasswordVisibility,
                       ),
-                      errorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                      errorText: state.errorMessage
+                      errorText: state.errorMessage,
                     ),
                     obscureText: !state.isPasswordVisible,
                     onChanged: (value) => logic.setPassword(value),
@@ -71,11 +123,12 @@ class SignUpForm extends StatelessWidget {
                   const SizedBox(height: 20),
                   state.isLoading
                       ? CircularProgressIndicator()
-                      : ElevatedButton(
+                      : CardButton(
+                          buttonColor: Colors.blueGrey,
                           onPressed: state.isValid
                               ? () => logic.signUp(context)
                               : null,
-                          child: const Text("Đăng ký ngay"),
+                          text: 'Đăng ký',
                         ),
                 ],
               ),
