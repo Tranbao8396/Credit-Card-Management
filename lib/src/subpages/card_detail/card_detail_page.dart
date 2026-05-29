@@ -62,7 +62,11 @@ class CardDetailPage extends StatelessWidget {
                   NameCard(
                     cardColor: const Color.fromARGB(255, 201, 148, 250),
                     onSettingsPressed: () async {
-                      final res = await SetLimitWidget.show(context, card, state.limitVal);
+                      final res = await SetLimitWidget.show(
+                        context,
+                        card,
+                        state.limitVal,
+                      );
                       if (res == true) {
                         await logic.getLimitSpending();
                       }
@@ -72,19 +76,36 @@ class CardDetailPage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            Text('Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}', style: TextStyle(
-                              fontSize: 14
-                            ),),
-                            Text(' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}', style: TextStyle(
-                              fontSize: 14
-                            ),),
+                            Text(
+                              'Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}',
+                              style: TextStyle(fontSize: 14),
+                            ),
+                            Text(
+                              ' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}',
+                              style: TextStyle(fontSize: 14),
+                            ),
                           ],
                         ),
                         Row(
                           children: [
-                            Text('${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ', style: TextStyle(
-                              fontSize: 16
-                            ),),
+                            Text(
+                              '${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color:
+                                    state.limitVal != null &&
+                                        state.totalSpending != null &&
+                                        state.totalSpending! > state.limitVal!
+                                    ? const Color.fromARGB(255, 202, 43, 32)
+                                    : Colors.black,
+                                fontWeight:
+                                    state.limitVal != null &&
+                                        state.totalSpending != null &&
+                                        state.totalSpending! > state.limitVal!
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
                             Text(
                               '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
                               style: TextStyle(
@@ -251,7 +272,9 @@ class CardDetailPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Text('${item.price.toStringAsFixed(0)} vnd'),
+                                    Text(
+                                      '${item.price.toStringAsFixed(0)} vnd',
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -266,7 +289,9 @@ class CardDetailPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Text('${item?.cashBackRatio.toStringAsFixed(2)}%'),
+                                    Text(
+                                      '${item?.cashBackRatio.toStringAsFixed(2)}%',
+                                    ),
                                   ],
                                 ),
                                 Row(
