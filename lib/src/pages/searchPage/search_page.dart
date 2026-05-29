@@ -43,6 +43,7 @@ class SearchPage extends StatelessWidget {
                     ),
                   ),
                   onChanged: (value) => logic.setQuery(value),
+                  onFieldSubmitted: (value) => logic.search(context),
                 ),
                 SizedBox(height: 20),
 

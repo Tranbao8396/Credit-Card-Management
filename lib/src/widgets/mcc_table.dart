@@ -28,11 +28,11 @@ class MccTable extends StatelessWidget {
                 keyboardType: TextInputType.number,
                 textDirection: TextDirection.rtl,
                 decoration: InputDecoration(
-                  isDense: true, // Thu nhỏ khoảng cách mặc định
+                  isDense: true,
                   contentPadding: EdgeInsets.symmetric(
                     vertical:
-                        10.0, // Điều chỉnh chiều cao bằng cách tăng/giảm padding dọc
-                    horizontal: 10.0, // Padding ngang
+                        10.0,
+                    horizontal: 10.0,
                   ),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
