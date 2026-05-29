@@ -223,6 +223,7 @@ class CardDetailPage extends StatelessWidget {
                         card,
                       );
                       if (res == true) {
+                        await logic.getTransactionCost();
                         await logic.getTransactionsList();
                       }
                     },
@@ -250,7 +251,7 @@ class CardDetailPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Text('${item.price.toString()} vnd'),
+                                    Text('${item.price.toStringAsFixed(0)} vnd'),
                                   ],
                                 ),
                                 Row(
@@ -265,7 +266,7 @@ class CardDetailPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Text('${item?.cashBackRatio.toString()}%'),
+                                    Text('${item?.cashBackRatio.toStringAsFixed(2)}%'),
                                   ],
                                 ),
                                 Row(
@@ -281,7 +282,7 @@ class CardDetailPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${((item?.cashBackRatio / 100) * item?.price).toString()} vnd',
+                                      '${((item?.cashBackRatio / 100) * item?.price).toStringAsFixed(0)} vnd',
                                     ),
                                   ],
                                 ),

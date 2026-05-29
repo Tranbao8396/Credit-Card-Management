@@ -99,7 +99,8 @@ class CardDetailLogic extends ChangeNotifier {
           .add({
             'transaction_name': state.transactionName,
             'price': state.price,
-            'category_id': state.category!.id,
+            'category_name': state.category!.categoryName,
+            'cash_back': state.category!.cashBack,
             'createdOn': state.transactionDate ?? DateTime.now(),
           });
       clear();
@@ -107,8 +108,6 @@ class CardDetailLogic extends ChangeNotifier {
     } catch (e) {
       throw ('Error: $e');
     }
-
-    await getTransactionCost();
     if (!context.mounted) return;
     Navigator.of(context).pop(true);
   }
@@ -128,15 +127,11 @@ class CardDetailLogic extends ChangeNotifier {
       state.transactions = query.docs.map<CardTransaction?>((e) {
         final data = e.data();
 
-        final cat = state.cashBackCat
-            ?.where((e) => e?.id == data['category_id'])
-            .firstOrNull;
-
         return CardTransaction(
           transactionName: data['transaction_name'],
-          categoryName: cat?.categoryName,
+          categoryName: data['category_name'],
           price: data['price'],
-          cashBackRatio: cat?.cashBack,
+          cashBackRatio: data['cash_back'],
           createdOn: data['createdOn'].toDate(),
         );
       }).toList();
