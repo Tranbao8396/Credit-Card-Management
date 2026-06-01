@@ -76,6 +76,7 @@ class TransactionDialog extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       DropdownButtonFormField(
+                        isExpanded: true, 
                         items: [
                           ...(categories ?? []).map(
                             (category) => DropdownMenuItem(

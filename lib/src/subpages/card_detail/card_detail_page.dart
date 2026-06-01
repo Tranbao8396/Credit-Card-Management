@@ -36,7 +36,7 @@ class CardDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LinedTitle(title: 'Dao dịch'),
+                  LinedTitle(title: 'Giao dịch'),
                   SizedBox(height: 5),
                   Row(
                     children: [
