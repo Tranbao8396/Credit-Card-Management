@@ -1,4 +1,5 @@
 class CardTransaction {
+  String? id;
   String? transactionName;
   String? categoryName;
   double? cashBackRatio;
@@ -6,6 +7,7 @@ class CardTransaction {
   DateTime? createdOn;
 
   CardTransaction({
+    this.id,
     this.transactionName,
     this.categoryName,
     this.price,

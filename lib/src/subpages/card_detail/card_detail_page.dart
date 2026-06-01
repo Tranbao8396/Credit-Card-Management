@@ -1,5 +1,6 @@
 import 'package:credit_management/src/models/card_model.dart';
 import 'package:credit_management/src/subpages/card_detail/card_detail_logic.dart';
+import 'package:credit_management/src/widgets/confirm_dialog.dart';
 import 'package:credit_management/src/widgets/limit_dialog.dart';
 import 'package:credit_management/src/widgets/transaction_dialog.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
@@ -35,98 +36,8 @@ class CardDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LinedTitle(title: 'Danh mục được hoàn'),
-                  SizedBox(height: 5),
-                  NameCard(
-                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
-                    cardColor: const Color.fromARGB(255, 104, 203, 241),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (var item in state.cashBackCat ?? [])
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.categoryName,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                              Text('${item.cashBack.toString()}%'),
-                            ],
-                          ),
-                        SizedBox(height: 10),
-                        NameCard(
-                          cardColor: const Color.fromARGB(255, 201, 148, 250),
-                          onSettingsPressed: () async {
-                            final res = await SetLimitWidget.show(
-                              context,
-                              card,
-                              state.limitVal,
-                            );
-                            if (res == true) {
-                              await logic.getLimitSpending();
-                            }
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    'Chi tiêu tháng ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month, 1))}',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  Text(
-                                    ' - ${DateFormat.yMd().format(DateTime(DateTime.now().year, DateTime.now().month + 1, 0))}',
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    '${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color:
-                                          state.limitVal != null &&
-                                              state.totalSpending != null &&
-                                              state.totalSpending! >
-                                                  state.limitVal!
-                                          ? const Color.fromARGB(
-                                              255,
-                                              202,
-                                              43,
-                                              32,
-                                            )
-                                          : Colors.black,
-                                      fontWeight:
-                                          state.limitVal != null &&
-                                              state.totalSpending != null &&
-                                              state.totalSpending! >
-                                                  state.limitVal!
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                    ),
-                                  ),
-                                  Text(
-                                    '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   LinedTitle(title: 'Dao dịch'),
+                  SizedBox(height: 5),
                   Row(
                     children: [
                       Expanded(
@@ -242,7 +153,98 @@ class CardDetailPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
+                  LinedTitle(title: 'Danh mục được hoàn'),
+                  SizedBox(height: 5),
+                  NameCard(
+                    padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+                    cardColor: const Color.fromARGB(255, 104, 203, 241),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var item in state.cashBackCat ?? [])
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  item.categoryName,
+                                  overflow: TextOverflow.clip,
+                                ),
+                              ),
+                              Text('${item.cashBack.toString()}%'),
+                            ],
+                          ),
+                        SizedBox(height: 10),
+                        NameCard(
+                          cardColor: const Color.fromARGB(255, 201, 148, 250),
+                          onSettingsPressed: () async {
+                            final res = await SetLimitWidget.show(
+                              context,
+                              card,
+                              state.limitVal,
+                            );
+                            if (res == true) {
+                              await logic.getLimitSpending();
+                            }
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Chi tiêu tháng ${state.startDate != null ? DateFormat.yMd().format(state.startDate!) : ''}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                  Text(
+                                    ' - ${state.endDate != null ? DateFormat.yMd().format(state.endDate!) : ''}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    '${state.totalSpending?.toStringAsFixed(0) ?? '0'} / ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color:
+                                          state.limitVal != null &&
+                                              state.totalSpending != null &&
+                                              state.totalSpending! >
+                                                  state.limitVal!
+                                          ? const Color.fromARGB(
+                                              255,
+                                              202,
+                                              43,
+                                              32,
+                                            )
+                                          : Colors.black,
+                                      fontWeight:
+                                          state.limitVal != null &&
+                                              state.totalSpending != null &&
+                                              state.totalSpending! >
+                                                  state.limitVal!
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                    ),
+                                  ),
+                                  Text(
+                                    '${state.limitVal?.toStringAsFixed(0) ?? '-'} vnd',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   CardButton(
                     text: 'Thêm giao dịch',
                     onPressed: () async {
@@ -337,6 +339,23 @@ class CardDetailPage extends StatelessWidget {
                                       )).toString(),
                                     ),
                                   ],
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    ConfirmDialogWidget.show(
+                                      context,
+                                      title: 'Xác nhận',
+                                      message:
+                                          'Bạn có chắc muốn xóa giao dịch này không?',
+                                      onConfirm: () async {
+                                        await logic.delateTransaction(
+                                          context,
+                                          item!.id,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(Icons.delete),
                                 ),
                               ],
                             ),

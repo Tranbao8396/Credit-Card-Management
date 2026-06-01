@@ -128,6 +128,7 @@ class CardDetailLogic extends ChangeNotifier {
         final data = e.data();
 
         return CardTransaction(
+          id: e.id,
           transactionName: data['transaction_name'],
           categoryName: data['category_name'],
           price: data['price'],
@@ -144,18 +145,14 @@ class CardDetailLogic extends ChangeNotifier {
 
   Future<void> getTransactionCost() async {
     try {
-      final currentDate = DateTime.now();
-      final startMonth = DateTime(currentDate.year, currentDate.month, 1);
-      final endMonth = DateTime(currentDate.year, currentDate.month + 1, 0);
-
       final query = await _db
           .collection('users')
           .doc(userId)
           .collection('cards')
           .doc(card.id)
           .collection('transactions')
-          .where('createdOn', isGreaterThanOrEqualTo: startMonth)
-          .where('createdOn', isLessThanOrEqualTo: endMonth)
+          .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
+          .where('createdOn', isLessThanOrEqualTo: state.endDate)
           .get();
 
       state.totalSpending = query.docs.fold(
@@ -206,6 +203,30 @@ class CardDetailLogic extends ChangeNotifier {
     } catch (e) {
       throw ("Error: $e");
     }
+  }
+
+  Future<void> delateTransaction(
+    BuildContext context,
+    String transactionid,
+  ) async {
+    try {
+      await _db
+          .collection('users')
+          .doc(userId)
+          .collection('cards')
+          .doc(card.id)
+          .collection('transactions')
+          .doc(transactionid)
+          .delete();
+      
+      await getTransactionsList();
+      await getTransactionCost();
+      notifyListeners();
+    } catch (e) {
+      throw {"Error: $e"};
+    }
+    if (!context.mounted) return;
+    Navigator.of(context).pop(true);
   }
 
   void clear() {

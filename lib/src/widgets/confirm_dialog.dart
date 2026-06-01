@@ -64,7 +64,7 @@ class ConfirmDialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: CardButton(
-                        onPressed: () => Navigator.of(context).pop(),
+                        onPressed: () => Navigator.of(context).pop(false),
                         text: 'Thôi khỏi',
                       ),
                     ),
