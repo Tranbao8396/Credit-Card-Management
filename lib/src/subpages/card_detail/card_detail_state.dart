@@ -1,3 +1,4 @@
+import 'package:credit_management/src/models/card_model.dart';
 import 'package:credit_management/src/types/category.dart';
 import 'package:credit_management/src/types/card_transaction.dart';
 
@@ -14,4 +15,6 @@ class CardDetailState {
   DateTime? transactionDate;
   bool get isValid => transactionName == null || price == null || category == null;
   List<CardTransaction?>? transactions;
+  List<CardModel>? userCards;
+  CardModel? pickedCard;
 }

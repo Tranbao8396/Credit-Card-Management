@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:credit_management/src/models/card_model.dart';
 import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/subpages/card_detail/card_detail_state.dart';
+import 'package:credit_management/src/types/bank.dart';
+import 'package:credit_management/src/types/bank_card.dart';
 import 'package:credit_management/src/types/category.dart';
 import 'package:credit_management/src/types/card_transaction.dart';
 import 'package:flutter/material.dart';
@@ -19,13 +21,17 @@ class CardDetailLogic extends ChangeNotifier {
     super.dispose();
   }
 
-  final CardModel card;
+  final CardModel? card;
 
-  CardDetailLogic({required this.card}) {
-    getCashBackList();
-    getTransactionsList();
-    getTransactionCost();
-    getLimitSpending();
+  CardDetailLogic({this.card}) {
+    if (card != null) {
+      getCashBackList();
+      getTransactionsList();
+      getTransactionCost();
+      getLimitSpending();
+    } else {
+      getUserCardsList();
+    }
   }
 
   void setStartDate(DateTime startDate) {
@@ -63,13 +69,20 @@ class CardDetailLogic extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setCard(CardModel? card) async {
+    state.pickedCard = card;
+    await getCashBackList();
+    notifyListeners();
+  }
+
   Future<void> getCashBackList() async {
     try {
-      final cardId = card.cardInfoId;
-      final bankId = card.bankId;
+      final cardId = card?.cardInfoId ?? state.pickedCard?.cardInfoId;
+      final bankId = card?.bankId ?? state.pickedCard?.bankId;
       final queryBanks = await _db.collection('banks').doc(bankId).get();
       final bankData = queryBanks.data();
-      final userCard = bankData!['bank_cards']
+      if (bankData == null) return;
+      final userCard = bankData['bank_cards']
           .where((card) => card['card_id'] == cardId)
           .single;
       state.cashBackCat = userCard['card_categories']
@@ -89,12 +102,13 @@ class CardDetailLogic extends ChangeNotifier {
 
   Future<void> addTransaction(BuildContext context) async {
     if (state.isValid) return;
+    final pickedCard = state.pickedCard;
     try {
       await _db
           .collection('users')
           .doc(userId)
           .collection('cards')
-          .doc(card.id)
+          .doc(card?.id ?? pickedCard?.id)
           .collection('transactions')
           .add({
             'transaction_name': state.transactionName,
@@ -118,7 +132,7 @@ class CardDetailLogic extends ChangeNotifier {
           .collection('users')
           .doc(userId)
           .collection('cards')
-          .doc(card.id)
+          .doc(card?.id)
           .collection('transactions')
           .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
           .where('createdOn', isLessThanOrEqualTo: state.endDate)
@@ -149,7 +163,7 @@ class CardDetailLogic extends ChangeNotifier {
           .collection('users')
           .doc(userId)
           .collection('cards')
-          .doc(card.id)
+          .doc(card?.id)
           .collection('transactions')
           .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
           .where('createdOn', isLessThanOrEqualTo: state.endDate)
@@ -173,7 +187,7 @@ class CardDetailLogic extends ChangeNotifier {
             .collection('users')
             .doc(userId)
             .collection('cards')
-            .doc(card.id)
+            .doc(card?.id)
             .update({'limit_spending': state.limitSpending});
       }
       state.limitSpending = null;
@@ -191,7 +205,7 @@ class CardDetailLogic extends ChangeNotifier {
           .collection('users')
           .doc(userId)
           .collection('cards')
-          .doc(card.id)
+          .doc(card?.id)
           .get()
           .then((doc) {
             if (doc.exists) {
@@ -199,6 +213,7 @@ class CardDetailLogic extends ChangeNotifier {
               state.limitVal = data?['limit_spending']?.toDouble() ?? 0.0;
             }
           });
+      if (_isDisposed) return;
       notifyListeners();
     } catch (e) {
       throw ("Error: $e");
@@ -214,11 +229,11 @@ class CardDetailLogic extends ChangeNotifier {
           .collection('users')
           .doc(userId)
           .collection('cards')
-          .doc(card.id)
+          .doc(card?.id)
           .collection('transactions')
           .doc(transactionid)
           .delete();
-      
+
       await getTransactionsList();
       await getTransactionCost();
       notifyListeners();
@@ -227,6 +242,68 @@ class CardDetailLogic extends ChangeNotifier {
     }
     if (!context.mounted) return;
     Navigator.of(context).pop(true);
+  }
+
+  Future<Bank?> getCardInfo({
+    required String bankId,
+    required String cardInfoId,
+  }) async {
+    try {
+      final res = await _db.collection('banks').doc(bankId).get();
+      final data = res.data();
+      final cardsList = data?['bank_cards'];
+      final cardData = cardsList
+          .where((bankCard) => bankCard['card_id'] == cardInfoId)
+          .single;
+      final cardDataCon = BankCard(
+        cardName: cardData['card_name'],
+        cardService: cardData['card_service'],
+      );
+      return Bank(
+        bankName: data?['bank_name'],
+        bankCards: <BankCard>[cardDataCon],
+      );
+    } catch (e) {
+      throw ('Error: $e');
+    }
+  }
+
+  Future<void> getUserCardsList() async {
+    try {
+      final query = await _db
+          .collection('users')
+          .doc(userId)
+          .collection('cards')
+          .get();
+
+      final userCardsList = await Future.wait(
+        query.docs.map<Future<CardModel>>((e) async {
+          final data = e.data();
+
+          final cardInfo = await getCardInfo(
+            bankId: data['bank_info'],
+            cardInfoId: data['card_info'],
+          );
+
+          return CardModel(
+            id: e.id,
+            bankId: data['bank_info'],
+            bankName: cardInfo?.bankName ?? '',
+            cardInfoId: data['card_info'],
+            cardName: cardInfo?.bankCards?.first?.cardName ?? '',
+            number: data['card_number'],
+            cardService: data['card_type'],
+            expiryDate: (data['card_expiry_date'] as Timestamp).toDate(),
+          );
+        }),
+      );
+      state.userCards = userCardsList;
+
+      if (_isDisposed) return;
+      notifyListeners();
+    } catch (e) {
+      throw ("Error: $e");
+    }
   }
 
   void clear() {

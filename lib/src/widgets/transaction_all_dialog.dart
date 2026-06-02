@@ -1,32 +1,28 @@
-import 'package:credit_management/src/models/card_model.dart';
 import 'package:credit_management/src/subpages/card_detail/card_detail_logic.dart';
-import 'package:credit_management/src/types/category.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-class TransactionDialogWidget {
-  static Future<bool?> show(BuildContext context, categories, card) {
+class TransactionAllDialogWidget {
+  static Future<bool?> show(BuildContext context, transactionName) {
     return showDialog<bool?>(
       context: context,
       builder: (context) =>
-          TransactionDialog(categories: categories, card: card),
+          TransactionAllDialog(transactionName: transactionName),
     );
   }
 }
 
-class TransactionDialog extends StatelessWidget {
-  final List<Category?>? categories;
-  final CardModel card;
+class TransactionAllDialog extends StatelessWidget {
   final String? transactionName;
 
-  const TransactionDialog({super.key, this.categories, this.transactionName, required this.card});
+  const TransactionAllDialog({super.key, this.transactionName});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CardDetailLogic(card: card),
+      create: (_) => CardDetailLogic(),
       child: Consumer<CardDetailLogic>(
         builder: (context, logic, child) {
           final state = logic.state;
@@ -53,7 +49,8 @@ class TransactionDialog extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextFormField(
-                        initialValue: transactionName,
+                        controller: TextEditingController(text: transactionName),
+                        readOnly: true,
                         decoration: InputDecoration(
                           labelText: "Tên cửa hàng",
                           border: const OutlineInputBorder(
@@ -78,12 +75,45 @@ class TransactionDialog extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       DropdownButtonFormField(
-                        isExpanded: true, 
+                        isExpanded: true,
                         items: [
-                          ...(categories ?? []).map(
-                            (category) => DropdownMenuItem(
-                              value: category,
-                              child: Text(category?.categoryName ?? ''),
+                          ...(state.userCards ?? []).map(
+                            (item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(item.cardName ?? ''),
+                            ),
+                          ),
+                        ],
+                        onChanged: (value) async => {logic.setCard(value)},
+                        decoration: InputDecoration(
+                          labelText: "Ngân hàng",
+                          border: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              width: 4,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                            borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 0, 0, 0),
+                              width: 4,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField(
+                        isExpanded: true,
+                        items: [
+                          ...(state.cashBackCat ?? []).map(
+                            (item) => DropdownMenuItem(
+                              value: item,
+                              child: Text(item?.categoryName ?? ''),
                             ),
                           ),
                         ],
@@ -138,7 +168,9 @@ class TransactionDialog extends StatelessWidget {
                       TextFormField(
                         readOnly: true,
                         controller: TextEditingController(
-                          text: state.transactionDate != null ?  DateFormat.yMd().format(state.transactionDate!) : ''
+                          text: state.transactionDate != null
+                              ? DateFormat.yMd().format(state.transactionDate!)
+                              : '',
                         ),
                         decoration: InputDecoration(
                           labelText: "Ngày dao dịch",
@@ -186,6 +218,7 @@ class TransactionDialog extends StatelessWidget {
                       CardButton(
                         text: 'Thêm giao dịch',
                         onPressed: () async {
+                          if (transactionName != null) logic.setTransactionName(transactionName ?? '');
                           await logic.addTransaction(context);
                         },
                       ),
