@@ -1,8 +1,6 @@
 import 'package:credit_management/src/pages/searchPage/search_page_logic.dart';
 import 'package:credit_management/src/pages/searchPage/search_state.dart';
-import 'package:credit_management/src/widgets/notify_dialog.dart';
 import 'package:credit_management/src/widgets/transaction_all_dialog.dart';
-import 'package:credit_management/src/widgets/transaction_dialog.dart';
 import 'package:flutter/material.dart';
 
 class MccTable extends StatelessWidget {
