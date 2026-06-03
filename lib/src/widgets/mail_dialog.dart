@@ -1,26 +1,22 @@
-import 'package:credit_management/src/pages/accountPage/account_logic.dart';
+import 'package:credit_management/src/services/mail_service.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AccountEditDialogWidget {
+class MailDialogWidget {
   static Future<bool?> show(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (context) => AccountEditDialog(),
-    );
+    return showDialog(context: context, builder: (context) => MailDialog());
   }
 }
 
-class AccountEditDialog extends StatelessWidget {
-  const AccountEditDialog({super.key});
-
+class MailDialog extends StatelessWidget {
+  const MailDialog({super.key});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => AccountLogic(),
-      child: Consumer<AccountLogic>(
-        builder: (context, logic, child) {
+      create: (_) => MailService(),
+      child: Consumer<MailService>(
+        builder: (context, service, child) {
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -45,7 +41,7 @@ class AccountEditDialog extends StatelessWidget {
                     children: [
                       TextFormField(
                         decoration: InputDecoration(
-                          labelText: "Tên nè",
+                          labelText: "Tiêu đề đóng góp",
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
@@ -64,13 +60,15 @@ class AccountEditDialog extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onChanged: (value) => {logic.setName(value)},
+                        onChanged:(value) => service.setTitle(value),
                       ),
                       SizedBox(height: 10),
                       TextFormField(
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.multiline,
+                        minLines: 4,
+                        maxLines: 8,
                         decoration: InputDecoration(
-                          labelText: "Mật khẩu mới nè",
+                          labelText: "Đóng góp đê",
                           border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
@@ -89,13 +87,15 @@ class AccountEditDialog extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onChanged: (value) => {logic.setPassword(value)},
+                        onChanged:(value) => service.setContent(value),
                       ),
                       SizedBox(height: 10),
                       CardButton(
                         text: 'Xác nhận đi nè',
                         onPressed: () async {
-                          await logic.updateInfo(context);
+                          await service.sendMail(service.title ?? '', service.content ?? '');
+                          if (!context.mounted) return;
+                          Navigator.of(context).pop(true);
                         },
                       ),
                     ],

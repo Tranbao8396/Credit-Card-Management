@@ -3,6 +3,7 @@ import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:credit_management/src/widgets/info_card.dart';
 import 'package:credit_management/src/widgets/lined_title.dart';
+import 'package:credit_management/src/widgets/mail_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
@@ -26,17 +27,18 @@ class AccountPage extends StatelessWidget {
                   await AccountEditDialogWidget.show(context);
                 },
               ),
-              SizedBox(height: 5),
-              CardButton(
-                text: 'Muốn tốt hơn thì cho mình xin tí bồi bổ',
-                onPressed: () {},
-              ),
-              SizedBox(height: 20),
+              // CardButton(
+              //   text: 'Muốn tốt hơn thì cho mình xin tí bồi bổ',
+              //   onPressed: () {},
+              // ),
+              // SizedBox(height: 20),
               LinedTitle(title: 'Đóng góp ý kiến'),
               SizedBox(height: 5),
               CardButton(
                 text: 'Có gì thì bạn cứ đóng góp, đừng ngại',
-                onPressed: () {},
+                onPressed: () async {
+                  await MailDialogWidget.show(context);
+                },
                 buttonColor: Colors.amber,
                 fontSize: 16,
                 textColor: Colors.black,
