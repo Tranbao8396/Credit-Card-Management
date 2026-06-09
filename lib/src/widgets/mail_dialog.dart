@@ -93,7 +93,7 @@ class MailDialog extends StatelessWidget {
                       CardButton(
                         text: 'Xác nhận đi nè',
                         onPressed: () async {
-                          await service.sendMail(service.title ?? '', service.content ?? '');
+                          await service.sendMail(title: service.title ?? '', content: service.content ?? '');
                           if (!context.mounted) return;
                           Navigator.of(context).pop(true);
                         },

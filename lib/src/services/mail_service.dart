@@ -17,11 +17,14 @@ class MailService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> sendMail(String title, String content) async {
+  Future<void> sendMail({String? title, String? content}) async {
     final Uri emailLanchUri = Uri(
       scheme: 'mailto',
       path: 'tranbaoworking@gmail.com',
-      queryParameters: {'subject': Uri.encodeComponent(title), 'body': Uri.encodeComponent(content)},
+      query: encodeQueryParameters({
+        'subject': title ?? '',
+        'body': content ?? '',
+      }),
     );
 
     log("Email ne: ${emailLanchUri.toString()}");
@@ -32,4 +35,13 @@ class MailService extends ChangeNotifier {
       throw 'Could not launch $emailLanchUri';
     }
   }
+}
+
+String? encodeQueryParameters(Map<String, String> params) {
+  return params.entries
+      .map(
+        (MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}',
+      )
+      .join('&');
 }

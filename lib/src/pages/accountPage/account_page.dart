@@ -1,9 +1,9 @@
+import 'package:credit_management/src/services/mail_service.dart';
 import 'package:credit_management/src/widgets/account_edit_dialog.dart';
 import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/widgets/card_button.dart';
 import 'package:credit_management/src/widgets/info_card.dart';
 import 'package:credit_management/src/widgets/lined_title.dart';
-import 'package:credit_management/src/widgets/mail_dialog.dart';
 import 'package:flutter/material.dart';
 
 class AccountPage extends StatelessWidget {
@@ -37,7 +37,7 @@ class AccountPage extends StatelessWidget {
               CardButton(
                 text: 'Có gì thì bạn cứ đóng góp, đừng ngại',
                 onPressed: () async {
-                  await MailDialogWidget.show(context);
+                  await MailService().sendMail();
                 },
                 buttonColor: Colors.amber,
                 fontSize: 16,
