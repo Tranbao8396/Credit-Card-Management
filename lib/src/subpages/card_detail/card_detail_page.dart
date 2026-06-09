@@ -147,6 +147,7 @@ class CardDetailPage extends StatelessWidget {
                           text: '⌕',
                           onPressed: () async {
                             await logic.getTransactionsList();
+                            await logic.getTransactionCost();
                           },
                           buttonColor: const Color.fromARGB(255, 80, 108, 131),
                         ),
