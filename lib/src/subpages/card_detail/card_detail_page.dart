@@ -147,7 +147,8 @@ class CardDetailPage extends StatelessWidget {
                           text: '⌕',
                           onPressed: () async {
                             await logic.getTransactionsList();
-                            await logic.getTransactionCost();
+                            await logic.getCashBackTotal();
+                            await logic.getTransactionTotal();
                           },
                           buttonColor: const Color.fromARGB(255, 80, 108, 131),
                         ),
@@ -240,6 +241,14 @@ class CardDetailPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Tổng được hoàn: ${state.totalCashBack?.toStringAsFixed(0) ?? '0'}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -255,7 +264,8 @@ class CardDetailPage extends StatelessWidget {
                         card,
                       );
                       if (res == true) {
-                        await logic.getTransactionCost();
+                        await logic.getTransactionTotal();
+                        await logic.getCashBackTotal();
                         await logic.getTransactionsList();
                       }
                     },

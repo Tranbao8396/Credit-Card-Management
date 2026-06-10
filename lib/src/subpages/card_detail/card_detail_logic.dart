@@ -27,7 +27,8 @@ class CardDetailLogic extends ChangeNotifier {
     if (card != null) {
       getCashBackList();
       getTransactionsList();
-      getTransactionCost();
+      getTransactionTotal();
+      getCashBackTotal();
       getLimitSpending();
     } else {
       getUserCardsList();
@@ -157,7 +158,7 @@ class CardDetailLogic extends ChangeNotifier {
     }
   }
 
-  Future<void> getTransactionCost() async {
+  Future<void> getTransactionTotal() async {
     try {
       final query = await _db
           .collection('users')
@@ -172,6 +173,29 @@ class CardDetailLogic extends ChangeNotifier {
       state.totalSpending = query.docs.fold(
         0.0,
         (cost, doc) => cost! + (doc.data()['price'] as num).toDouble(),
+      );
+      if (_isDisposed) return;
+      notifyListeners();
+    } catch (e) {
+      throw ("Error: $e");
+    }
+  }
+
+  Future<void> getCashBackTotal() async {
+    try {
+      final query = await _db
+          .collection('users')
+          .doc(userId)
+          .collection('cards')
+          .doc(card?.id)
+          .collection('transactions')
+          .where('createdOn', isGreaterThanOrEqualTo: state.startDate)
+          .where('createdOn', isLessThanOrEqualTo: state.endDate)
+          .get();
+
+      state.totalCashBack = query.docs.fold(
+        0.0,
+        (cost, doc) => cost! + (((doc.data()['cash_back'] / 100) * doc.data()['price']) as num).toDouble(),
       );
       if (_isDisposed) return;
       notifyListeners();
@@ -235,7 +259,8 @@ class CardDetailLogic extends ChangeNotifier {
           .delete();
 
       await getTransactionsList();
-      await getTransactionCost();
+      await getTransactionTotal();
+      await getCashBackTotal();
       notifyListeners();
     } catch (e) {
       throw {"Error: $e"};

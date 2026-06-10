@@ -8,6 +8,7 @@ class CardDetailState {
   String? transactionName;
   double? price;
   double? totalSpending;
+  double? totalCashBack;
   double? limitSpending;
   double? limitVal;
   Category? category;
