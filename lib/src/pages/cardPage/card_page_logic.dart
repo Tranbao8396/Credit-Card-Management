@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:credit_management/src/models/card_model.dart';
-import 'package:credit_management/src/pages/cardPage/card__page_state.dart';
+import 'package:credit_management/src/pages/cardPage/card_page_state.dart';
 import 'package:credit_management/src/services/authentication_service.dart';
 import 'package:credit_management/src/types/bank.dart';
 import 'package:credit_management/src/types/bank_card.dart';
@@ -37,6 +37,11 @@ class HomePageLogic extends ChangeNotifier {
 
   void setCardExpiryDate(DateTime expiryDate) {
     state.cardExpiryDate = expiryDate;
+    notifyListeners();
+  }
+
+  void setStatementDate(DateTime statementDate) {
+    state.statementDate = statementDate;
     notifyListeners();
   }
 
@@ -82,6 +87,7 @@ class HomePageLogic extends ChangeNotifier {
           number: data['card_number'],
           cardService: data['card_type'],
           expiryDate: (data['card_expiry_date'] as Timestamp).toDate(),
+          statementDate: (data['card_statement_date'] as Timestamp?)?.toDate(),
         );
       }));
       state.cards = userCardsList;
@@ -128,6 +134,7 @@ class HomePageLogic extends ChangeNotifier {
         'card_info': state.cardInfo?.cardId,
         'card_number': state.cardNumber,
         'card_expiry_date': state.cardExpiryDate,
+        'card_statement_date': state.statementDate,
         'card_type': state.cardType,
         'createdAt': DateTime.now(),
       });

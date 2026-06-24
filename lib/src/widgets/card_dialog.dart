@@ -137,6 +137,54 @@ class CardDialog extends StatelessWidget {
                         onChanged: (value) => logic.setCardNumber(value),
                       ),
                       SizedBox(height: 10),
+                      // MARK: Ngay toi han thanh toan
+                      TextFormField(
+                          style: TextStyle(fontSize: 14),
+                          readOnly: true,
+                          controller: TextEditingController(
+                            text: state.statementDate != null
+                                    ? state.statementDate!.day.toString().padLeft(2, '0')
+                                    : "",
+                          ),
+                          decoration: InputDecoration(
+                            labelText: "Ngày sao kê",
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                                width: 4,
+                              ),
+                            ),
+                            prefixIcon: IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.calendar_month),
+                            ),
+                          ),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              firstDate: DateTime(1950),
+                              lastDate: DateTime(2100),
+                            );
+
+                            if (pickedDate != null) {
+                              logic.setStatementDate(pickedDate);
+                            }
+                          },
+                        ),
+                      SizedBox(height: 10),
                       Row(
                         children: [
                           // MARK: ngay het han

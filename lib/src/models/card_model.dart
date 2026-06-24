@@ -7,6 +7,7 @@ class CardModel {
   String? number;
   String? cardService;
   DateTime? expiryDate;
+  DateTime? statementDate;
 
   CardModel({
     this.id,
@@ -17,5 +18,6 @@ class CardModel {
     this.number,
     this.cardService,
     this.expiryDate,
+    this.statementDate
   });
 }

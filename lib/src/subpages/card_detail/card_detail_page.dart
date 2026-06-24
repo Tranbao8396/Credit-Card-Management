@@ -21,6 +21,10 @@ class CardDetailPage extends StatelessWidget {
       child: Consumer<CardDetailLogic>(
         builder: (context, logic, child) {
           final state = logic.state;
+          final statementDate = logic.card?.statementDate;
+          final dateDisplay = statementDate != null 
+              ? statementDate.day.toString().padLeft(2, '0')
+              : 'xx';
           return Scaffold(
             appBar: AppBar(
               title: Text(
@@ -245,6 +249,14 @@ class CardDetailPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Tổng được hoàn: ${state.totalCashBack?.toStringAsFixed(0) ?? '0'}',
+                                    style: TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    'Ngày sao kê: $dateDisplay',
                                     style: TextStyle(fontSize: 14),
                                   ),
                                 ],

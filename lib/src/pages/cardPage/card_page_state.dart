@@ -6,6 +6,7 @@ class CardPageState {
   BankCard? cardInfo;
   String? cardNumber;
   DateTime? cardExpiryDate;
+  DateTime? statementDate;
   String? cardType;
   Bank? cardBank;
   bool isLoading = false;
